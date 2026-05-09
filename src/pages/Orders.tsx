@@ -23,33 +23,32 @@ const Orders = () => {
   
   return (
     <div className="page-container">
-      <div className="page-header flex justify-between items-center">
+      <div className="page-header orders-page-header">
         <div>
           <h1 className="page-title">Orders</h1>
           <p className="page-description">Manage and view your store orders.</p>
         </div>
-        <div className="flex gap-4">
+        <div className="orders-page-actions">
           <button className="btn btn-secondary"><Filter size={18} /> Filters</button>
           <button className="btn btn-secondary"><Download size={18} /> Export</button>
         </div>
       </div>
 
       <div className="card">
-        <div className="flex justify-between items-center mb-4">
-          <div className="tabs" style={{ marginBottom: 0, borderBottom: 'none' }}>
+        <div className="orders-toolbar">
+          <div className="tabs orders-tabs">
             {['All', 'Completed', 'Processing', 'Cancelled'].map(tab => (
               <button 
                 key={tab} 
                 className={`tab ${activeTab === tab ? 'active' : ''}`}
                 onClick={() => setActiveTab(tab)}
-                style={{ paddingBottom: '0.5rem' }}
               >
                 {tab}
               </button>
             ))}
           </div>
           
-          <div className="header-search" style={{ width: '250px' }}>
+          <div className="header-search orders-search">
             <Search size={16} className="text-secondary" />
             <input type="text" placeholder="Search orders..." />
           </div>
@@ -76,7 +75,7 @@ const Orders = () => {
                   <td>{order.total}</td>
                   <td><span className={getStatusBadge(order.status)}>{order.status}</span></td>
                   <td>
-                    <button className="btn btn-secondary" style={{ padding: '0.25rem 0.75rem', fontSize: '0.85rem' }}>
+                    <button className="btn btn-secondary table-action-btn">
                       View
                     </button>
                   </td>

@@ -43,6 +43,11 @@ type MenuSection = {
   items: MenuItem[];
 };
 
+type SidebarProps = {
+  isMobileOpen: boolean;
+  onNavigate: () => void;
+};
+
 const sections: MenuSection[] = [
   {
     title: 'Overview',
@@ -102,7 +107,7 @@ const sections: MenuSection[] = [
   }
 ];
 
-const Sidebar = () => {
+const Sidebar = ({ isMobileOpen, onNavigate }: SidebarProps) => {
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
 
   const handleLogout = () => {
@@ -122,9 +127,10 @@ const Sidebar = () => {
   const isExpanded = (itemLabel: string) => expandedItems.includes(itemLabel);
 
   return (
-    <aside className="sidebar">
+    <>
+    <aside className={`sidebar ${isMobileOpen ? 'open' : ''}`}>
       <div className="sidebar-shell">
-        <NavLink to="/" className="sidebar-logo">
+        <NavLink to="/" className="sidebar-logo" onClick={onNavigate}>
           <span className="sidebar-logo-mark">
             <Zap size={20} />
           </span>
@@ -173,6 +179,7 @@ const Sidebar = () => {
                           to={item.to}
                           end={item.to === '/'}
                           className={sharedClassName}
+                          onClick={onNavigate}
                         >
                           <span className="sidebar-link-icon">{item.icon}</span>
                           <span className="sidebar-link-label">{item.label}</span>
@@ -196,6 +203,7 @@ const Sidebar = () => {
                                 className={({ isActive }) =>
                                   `sidebar-sublink ${isActive ? 'active' : ''}`
                                 }
+                                onClick={onNavigate}
                               >
                                 {subItem.icon && (
                                   <span className="sidebar-sublink-icon">{subItem.icon}</span>
@@ -244,6 +252,13 @@ const Sidebar = () => {
         </div>
       </div>
     </aside>
+    <button
+      type="button"
+      className={`sidebar-overlay ${isMobileOpen ? 'show' : ''}`}
+      onClick={onNavigate}
+      aria-label="Close sidebar"
+    />
+    </>
   );
 };
 

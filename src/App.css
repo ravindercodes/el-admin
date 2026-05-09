@@ -38,12 +38,14 @@ body {
   font-family: 'Manrope', 'Segoe UI', sans-serif;
   background: var(--bg-primary);
   color: var(--text-primary);
+  overflow-x: hidden;
 }
 
 .layout-container {
   display: grid;
   grid-template-columns: 214px minmax(0, 1fr);
   min-height: 100vh;
+  position: relative;
 }
 
 .sidebar {
@@ -55,6 +57,11 @@ body {
   color: #94a3b8;
   border-right: 1px solid #172033;
   overflow: hidden;
+  z-index: 60;
+}
+
+.sidebar-overlay {
+  display: none;
 }
 
 .sidebar-shell {
@@ -309,6 +316,11 @@ main {
   display: flex;
   align-items: center;
   gap: 12px;
+  min-width: 0;
+}
+
+.header-menu-toggle {
+  display: none;
 }
 
 .header-search {
@@ -343,6 +355,8 @@ main {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .icon-button {
@@ -515,6 +529,8 @@ main {
   gap: 8px;
   border-bottom: 1px solid var(--border-color);
   margin-bottom: 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .tab {
@@ -525,6 +541,7 @@ main {
   color: var(--text-secondary);
   font-weight: 600;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .tab.active {
@@ -614,6 +631,88 @@ tbody tr:hover {
   margin-top: 8px;
 }
 
+.settings-panel {
+  width: min(600px, 100%);
+}
+
+.settings-panel-title {
+  margin-bottom: 1.5rem;
+  font-size: 1.125rem;
+}
+
+.settings-avatar-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.settings-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.settings-actions {
+  margin-top: 2rem;
+}
+
+.orders-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+}
+
+.orders-page-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.orders-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.9rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.orders-tabs {
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+.orders-search {
+  width: min(250px, 100%);
+}
+
+.table-action-btn {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+.chart-card {
+  height: clamp(300px, 42vw, 400px);
+}
+
+.chart-legend {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.chart-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .form-group {
   margin-bottom: 18px;
 }
@@ -663,15 +762,44 @@ textarea.form-input {
   }
 
   .sidebar {
-    position: relative;
-    height: auto;
-    padding: 14px;
-    border-right: none;
-    border-bottom: 1px solid rgba(148, 163, 184, 0.26);
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: min(300px, 84vw);
+    height: 100dvh;
+    border-right: 1px solid #172033;
+    border-bottom: none;
+    transform: translateX(-102%);
+    transition: transform 0.24s ease;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    border: none;
+    background: rgba(2, 8, 23, 0.58);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .sidebar-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
   }
 
   .sidebar-nav {
-    max-height: 280px;
+    max-height: calc(100dvh - 130px);
+  }
+
+  .header-menu-toggle {
+    display: grid;
   }
 }
 
@@ -687,7 +815,15 @@ textarea.form-input {
   }
 
   .header-actions {
-    justify-content: flex-end;
+    justify-content: space-between;
+  }
+
+  .header-cta span {
+    display: none;
+  }
+
+  .header-search-shortcut {
+    display: none;
   }
 
   .page-container {
@@ -696,5 +832,23 @@ textarea.form-input {
 
   .stats-grid {
     grid-template-columns: 1fr;
+  }
+
+  .orders-page-actions {
+    width: 100%;
+  }
+
+  .orders-page-actions .btn,
+  .orders-search {
+    width: 100%;
+  }
+
+  .orders-toolbar {
+    align-items: stretch;
+  }
+
+  .settings-avatar-row {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
