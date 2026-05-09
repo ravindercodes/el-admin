@@ -1,7 +1,12 @@
 import { useEffect } from 'react';
-import { Search, Bell, Settings, CircleHelp, Plus } from 'lucide-react';
+import { Search, Bell, Settings, CircleHelp, Plus, Menu, X } from 'lucide-react';
 
-const Header = () => {
+type HeaderProps = {
+  isMobileSidebarOpen: boolean;
+  onToggleMobileSidebar: () => void;
+};
+
+const Header = ({ isMobileSidebarOpen, onToggleMobileSidebar }: HeaderProps) => {
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', 'dark');
   }, []);
@@ -9,6 +14,14 @@ const Header = () => {
   return (
     <header className="header">
       <div className="header-left">
+        <button
+          className="icon-button header-menu-toggle"
+          aria-label={isMobileSidebarOpen ? 'Close menu' : 'Open menu'}
+          type="button"
+          onClick={onToggleMobileSidebar}
+        >
+          {isMobileSidebarOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
         <div className="header-search">
           <Search size={18} className="text-secondary" />
           <input type="text" placeholder="Search anything..." />

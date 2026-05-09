@@ -34,14 +34,14 @@ const Settings = () => {
         </div>
 
         {activeTab === 'Profile' && (
-          <div className="settings-form" style={{ maxWidth: '600px' }}>
-            <h3 style={{ marginBottom: '1.5rem', fontSize: '1.125rem' }}>Public Profile</h3>
+          <div className="settings-form settings-panel">
+            <h3 className="settings-panel-title">Public Profile</h3>
 
-            <div className="flex items-center gap-4 mb-8">
+            <div className="settings-avatar-row">
               <img
                 src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                 alt="Profile"
-                style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover' }}
+                className="settings-avatar"
               />
               <button className="btn btn-secondary">Change Avatar</button>
             </div>
@@ -65,15 +65,15 @@ const Settings = () => {
               ></textarea>
             </div>
 
-            <div className="mt-8">
+            <div className="settings-actions">
               <button className="btn btn-primary">Save Changes</button>
             </div>
           </div>
         )}
 
         {activeTab === 'Security' && (
-          <div className="settings-form" style={{ maxWidth: '600px' }}>
-            <h3 style={{ marginBottom: '1.5rem', fontSize: '1.125rem' }}>Change Password</h3>
+          <div className="settings-form settings-panel">
+            <h3 className="settings-panel-title">Change Password</h3>
 
             <div className="form-group">
               <label className="form-label">Current Password</label>
@@ -90,7 +90,7 @@ const Settings = () => {
               <input type="password" className="form-input" />
             </div>
 
-            <div className="mt-8">
+            <div className="settings-actions">
               <button className="btn btn-primary"><Key size={18} /> Update Password</button>
             </div>
           </div>

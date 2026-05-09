@@ -79,7 +79,7 @@ const Dashboard = () => {
       </div>
 
       <div className="charts-grid">
-        <div className="card" style={{ height: '400px' }}>
+        <div className="card chart-card">
           <div className="chart-card-header">
             <h2 className="chart-card-title">Revenue Overview</h2>
           </div>
@@ -103,7 +103,7 @@ const Dashboard = () => {
           </ResponsiveContainer>
         </div>
 
-        <div className="card" style={{ height: '400px' }}>
+        <div className="card chart-card">
           <div className="chart-card-header">
             <h2 className="chart-card-title">Traffic Sources</h2>
           </div>
@@ -128,9 +128,9 @@ const Dashboard = () => {
               />
             </PieChart>
           </ResponsiveContainer>
-          <div className="flex justify-center gap-4 mt-4">
+          <div className="chart-legend">
             {pieData.map((entry, index) => (
-              <div key={entry.name} className="flex items-center gap-2">
+              <div key={entry.name} className="chart-legend-item">
                 <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: COLORS[index % COLORS.length] }}></div>
                 <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>{entry.name}</span>
               </div>
