@@ -9,14 +9,14 @@ const Layout = () => {
   const closeSidebar = () => setIsMobileSidebarOpen(false);
 
   return (
-    <div className={`layout-container ${isMobileSidebarOpen ? 'mobile-sidebar-open' : ''}`}>
+    <div className="grid min-h-screen grid-cols-1 bg-zinc-950 text-zinc-100 lg:grid-cols-[280px_minmax(0,1fr)]">
       <Sidebar isMobileOpen={isMobileSidebarOpen} onNavigate={closeSidebar} />
-      <div className="main-content">
+      <div className="flex min-w-0 flex-col">
         <Header
           isMobileSidebarOpen={isMobileSidebarOpen}
           onToggleMobileSidebar={() => setIsMobileSidebarOpen((prev) => !prev)}
         />
-        <main>
+        <main className="min-h-0 flex-1">
           <Outlet />
         </main>
       </div>
