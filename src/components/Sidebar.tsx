@@ -52,7 +52,7 @@ const sections: MenuSection[] = [
   {
     title: 'Overview',
     items: [
-      { label: 'Dashboard', to: '/app', icon: <LayoutDashboard size={18} /> },
+      { label: 'Dashboard', to: '/dashboard', icon: <LayoutDashboard size={18} /> },
       { label: 'Analytics', icon: <BarChart3 size={18} /> },
       { label: 'eCommerce', icon: <ShoppingCart size={18} /> },
       { label: 'CRM', icon: <Users size={18} /> },
@@ -102,7 +102,7 @@ const sections: MenuSection[] = [
       { label: 'Kanban', icon: <Grid2x2 size={18} /> },
       { label: 'Calendar', icon: <CalendarDays size={18} /> },
       { label: 'Wizard', icon: <SquareTerminal size={18} /> },
-      { label: 'Forms', to: '/app/form-elements', icon: <FileText size={18} /> },
+      { label: 'Forms', to: '/form-elements', icon: <FileText size={18} /> },
     ],
   },
 ];
@@ -135,7 +135,7 @@ const Sidebar = ({ isMobileOpen, onNavigate }: SidebarProps) => {
       >
         <div className="flex h-full flex-col">
           <NavLink
-            to="/app"
+            to="/dashboard"
             className="flex items-center gap-2 border-b border-zinc-800 px-4 py-3"
             onClick={onNavigate}
           >
@@ -143,7 +143,7 @@ const Sidebar = ({ isMobileOpen, onNavigate }: SidebarProps) => {
               <Zap size={18} />
             </span>
             <span>
-              <strong className="block text-sm tracking-wide text-zinc-100">Apex</strong>
+              <strong className="block text-sm tracking-wide text-zinc-100">El Admin</strong>
               <small className="text-[10px] uppercase tracking-[0.14em] text-zinc-500">Dashboard</small>
             </span>
           </NavLink>
@@ -200,7 +200,7 @@ const Sidebar = ({ isMobileOpen, onNavigate }: SidebarProps) => {
                             />
                           </button>
                         ) : item.to ? (
-                          <NavLink to={item.to} end={item.to === '/app'} className={sharedClassName} onClick={onNavigate}>
+                          <NavLink to={item.to} end={item.to === '/dashboard'} className={sharedClassName} onClick={onNavigate}>
                             <span className="text-zinc-500">{item.icon}</span>
                             <span className="flex-1 text-left font-medium">{item.label}</span>
                             {item.badge && (

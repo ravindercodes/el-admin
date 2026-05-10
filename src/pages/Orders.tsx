@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { Search, Filter, Download } from 'lucide-react';
+import { Search, Filter, Download, Plus } from 'lucide-react';
+import { Table, type Column } from '../components/ui/Table';
+import Modal from '../components/ui/Modal';
 
 const mockOrders = [
   { id: 'ORD-001', customer: 'John Doe', date: '2026-05-09', total: '$120.00', status: 'Completed' },
@@ -8,6 +10,8 @@ const mockOrders = [
   { id: 'ORD-004', customer: 'Alice Brown', date: '2026-05-06', total: '$2,100.00', status: 'Completed' },
   { id: 'ORD-005', customer: 'Charlie Davis', date: '2026-05-05', total: '$34.50', status: 'Processing' },
 ];
+
+type Order = typeof mockOrders[0];
 
 const getStatusBadge = (status: string) => {
   switch (status) {
@@ -20,7 +24,38 @@ const getStatusBadge = (status: string) => {
 
 const Orders = () => {
   const [activeTab, setActiveTab] = useState('All');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   
+  const columns: Column<Order>[] = [
+    { header: 'Order ID', accessor: 'id', className: 'font-medium text-zinc-100' },
+    { header: 'Customer', accessor: 'customer' },
+    { header: 'Date', accessor: 'date' },
+    { header: 'Total', accessor: 'total' },
+    { 
+      header: 'Status', 
+      accessor: (order) => (
+        <span className={getStatusBadge(order.status)}>{order.status}</span>
+      ) 
+    },
+    { 
+      header: 'Action', 
+      accessor: (order) => (
+        <button 
+          onClick={() => {
+            setSelectedOrder(order);
+            setIsModalOpen(true);
+          }}
+          className="inline-flex h-8 items-center rounded-md border border-zinc-700 bg-zinc-950 px-3 text-xs font-semibold text-zinc-200 hover:bg-zinc-800 transition-colors">
+          View
+        </button>
+      ) 
+    },
+  ];
+
+  const filteredOrders = mockOrders.filter(o => activeTab === 'All' || o.status === activeTab);
+
   return (
     <div className="px-4 py-5 sm:px-6 lg:px-8">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
@@ -30,11 +65,17 @@ const Orders = () => {
         </div>
 
         <div className="flex w-full flex-wrap gap-2 sm:w-auto">
-          <button className="inline-flex h-10 items-center gap-2 rounded-lg border border-zinc-700 bg-zinc-900 px-4 text-sm font-semibold text-zinc-200">
+          <button className="inline-flex h-10 items-center gap-2 rounded-lg border border-zinc-700 bg-zinc-900 px-4 text-sm font-semibold text-zinc-200 hover:bg-zinc-800 transition-colors">
             <Filter size={18} /> Filters
           </button>
-          <button className="inline-flex h-10 items-center gap-2 rounded-lg border border-zinc-700 bg-zinc-900 px-4 text-sm font-semibold text-zinc-200">
+          <button className="inline-flex h-10 items-center gap-2 rounded-lg border border-zinc-700 bg-zinc-900 px-4 text-sm font-semibold text-zinc-200 hover:bg-zinc-800 transition-colors">
             <Download size={18} /> Export
+          </button>
+          <button 
+            onClick={() => setIsAddModalOpen(true)}
+            className="inline-flex h-10 items-center gap-2 rounded-lg bg-emerald-500 px-4 text-sm font-semibold text-zinc-950 hover:bg-emerald-400 transition-colors"
+          >
+            <Plus size={18} /> Add Order
           </button>
         </div>
       </div>
@@ -56,7 +97,7 @@ const Orders = () => {
             ))}
           </div>
           
-          <div className="flex h-10 w-full max-w-xs items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-950 px-3 text-zinc-400">
+          <div className="flex h-10 w-full max-w-xs items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-950 px-3 text-zinc-400 focus-within:border-emerald-500 transition-colors">
             <Search size={16} className="text-zinc-500" />
             <input
               type="text"
@@ -66,37 +107,134 @@ const Orders = () => {
           </div>
         </div>
 
-        <div className="overflow-auto rounded-xl border border-zinc-800">
-          <table className="w-full border-collapse">
-            <thead className="bg-zinc-950">
-              <tr className="text-left">
-                <th className="whitespace-nowrap px-4 py-3 text-xs uppercase tracking-wide text-zinc-400">Order ID</th>
-                <th className="whitespace-nowrap px-4 py-3 text-xs uppercase tracking-wide text-zinc-400">Customer</th>
-                <th className="whitespace-nowrap px-4 py-3 text-xs uppercase tracking-wide text-zinc-400">Date</th>
-                <th className="whitespace-nowrap px-4 py-3 text-xs uppercase tracking-wide text-zinc-400">Total</th>
-                <th className="whitespace-nowrap px-4 py-3 text-xs uppercase tracking-wide text-zinc-400">Status</th>
-                <th className="whitespace-nowrap px-4 py-3 text-xs uppercase tracking-wide text-zinc-400">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {mockOrders.filter(o => activeTab === 'All' || o.status === activeTab).map(order => (
-                <tr key={order.id} className="border-t border-zinc-800 text-sm text-zinc-300 hover:bg-zinc-800/50">
-                  <td className="whitespace-nowrap px-4 py-3 font-medium text-zinc-100">{order.id}</td>
-                  <td className="whitespace-nowrap px-4 py-3">{order.customer}</td>
-                  <td className="whitespace-nowrap px-4 py-3">{order.date}</td>
-                  <td className="whitespace-nowrap px-4 py-3">{order.total}</td>
-                  <td className="whitespace-nowrap px-4 py-3"><span className={getStatusBadge(order.status)}>{order.status}</span></td>
-                  <td className="whitespace-nowrap px-4 py-3">
-                    <button className="inline-flex h-8 items-center rounded-md border border-zinc-700 bg-zinc-950 px-3 text-xs font-semibold text-zinc-200">
-                      View
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <Table 
+          columns={columns} 
+          data={filteredOrders} 
+          keyExtractor={(item) => item.id} 
+        />
       </div>
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedOrder(null);
+        }}
+        title="Order Details"
+        size="lg"
+      >
+        {selectedOrder ? (
+          <div className="space-y-4 text-sm">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-zinc-400">Order ID</p>
+                <p className="font-medium text-zinc-100">{selectedOrder.id}</p>
+              </div>
+              <div>
+                <p className="text-zinc-400">Date</p>
+                <p className="font-medium text-zinc-100">{selectedOrder.date}</p>
+              </div>
+              <div>
+                <p className="text-zinc-400">Customer</p>
+                <p className="font-medium text-zinc-100">{selectedOrder.customer}</p>
+              </div>
+              <div>
+                <p className="text-zinc-400">Total</p>
+                <p className="font-medium text-zinc-100">{selectedOrder.total}</p>
+              </div>
+              <div>
+                <p className="text-zinc-400">Status</p>
+                <span className={`mt-1 ${getStatusBadge(selectedOrder.status)}`}>{selectedOrder.status}</span>
+              </div>
+            </div>
+            
+            <div className="mt-6 flex justify-end gap-2">
+              <button 
+                onClick={() => {
+                  setIsModalOpen(false);
+                  setSelectedOrder(null);
+                }}
+                className="inline-flex h-9 items-center justify-center rounded-lg border border-zinc-700 bg-transparent px-4 text-sm font-semibold text-zinc-300 hover:bg-zinc-800 transition-colors"
+              >
+                Close
+              </button>
+              <button 
+                className="inline-flex h-9 items-center justify-center rounded-lg bg-emerald-500 px-4 text-sm font-semibold text-zinc-950 hover:bg-emerald-400 transition-colors"
+              >
+                Download Invoice
+              </button>
+            </div>
+          </div>
+        ) : (
+          <p className="text-zinc-400">No order selected.</p>
+        )}
+      </Modal>
+
+      {/* Add Order Modal */}
+      <Modal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        title="Add New Order"
+        size="md"
+      >
+        <div className="space-y-4">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-zinc-300">Customer Name</label>
+            <input 
+              type="text" 
+              className="h-10 rounded-lg border border-zinc-700 bg-zinc-950 px-3 text-sm text-zinc-100 placeholder-zinc-500 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 transition-colors" 
+              placeholder="e.g. John Doe" 
+            />
+          </div>
+          
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-zinc-300">Order Date</label>
+            <input 
+              type="date" 
+              className="h-10 rounded-lg border border-zinc-700 bg-zinc-950 px-3 text-sm text-zinc-100 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 transition-colors" 
+            />
+          </div>
+          
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-zinc-300">Total Amount</label>
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500">$</span>
+              <input 
+                type="number" 
+                step="0.01"
+                className="h-10 w-full rounded-lg border border-zinc-700 bg-zinc-950 pl-7 pr-3 text-sm text-zinc-100 placeholder-zinc-500 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 transition-colors" 
+                placeholder="0.00" 
+              />
+            </div>
+          </div>
+          
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-zinc-300">Status</label>
+            <select 
+              className="h-10 w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 text-sm text-zinc-100 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 transition-colors appearance-none" 
+            >
+              <option value="Completed">Completed</option>
+              <option value="Processing">Processing</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </div>
+          
+          <div className="mt-6 flex justify-end gap-2">
+            <button 
+              onClick={() => setIsAddModalOpen(false)}
+              className="inline-flex h-10 items-center justify-center rounded-lg border border-zinc-700 bg-transparent px-4 text-sm font-semibold text-zinc-300 hover:bg-zinc-800 transition-colors"
+            >
+              Cancel
+            </button>
+            <button 
+              onClick={() => setIsAddModalOpen(false)}
+              className="inline-flex h-10 items-center justify-center rounded-lg bg-emerald-500 px-4 text-sm font-semibold text-zinc-950 hover:bg-emerald-400 transition-colors"
+            >
+              Save Order
+            </button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
