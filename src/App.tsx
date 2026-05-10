@@ -7,6 +7,7 @@ import Settings from './pages/Settings';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import ForgotPassword from './pages/ForgotPassword';
+import FormElements from './pages/FormElements';
 import { Navigate } from 'react-router-dom';
 
 function App() {
@@ -18,11 +19,11 @@ function App() {
         <Route path="/register" element={<Signup />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/app" element={<Layout />}>
-          <Route index element={<Dashboard />} />
-          <Route path="orders" element={<Orders />} />
-          <Route path="settings" element={<Settings />} />
+        <Route element={<Layout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/form-elements" element={<FormElements />} />
         </Route>
       </Routes>
     </BrowserRouter>
