@@ -8,6 +8,7 @@ import { Checkbox } from '../components/ui/Checkbox';
 import { Radio } from '../components/ui/Radio';
 import { Button } from '../components/ui/Button';
 import { Label } from '../components/ui/Label';
+import { Dropzone } from '../components/ui/Dropzone';
 
 const FormElements = () => {
   return (
@@ -158,6 +159,11 @@ const FormElements = () => {
             <div className="space-y-2">
               <Label htmlFor="date-input">Date Picker</Label>
               <Input id="date-input" type="date" />
+            </div>
+
+            <div className="space-y-2 md:col-span-2">
+              <Label>Drag & Drop File Upload</Label>
+              <Dropzone />
             </div>
           </div>
         </section>
