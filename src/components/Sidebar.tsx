@@ -102,7 +102,7 @@ const sections: MenuSection[] = [
       { label: 'Kanban', icon: <Grid2x2 size={18} /> },
       { label: 'Calendar', icon: <CalendarDays size={18} /> },
       { label: 'Wizard', icon: <SquareTerminal size={18} /> },
-      { label: 'Forms', icon: <FileText size={18} /> },
+      { label: 'Forms', to: '/app/form-elements', icon: <FileText size={18} /> },
     ],
   },
 ];
